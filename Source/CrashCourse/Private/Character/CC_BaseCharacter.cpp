@@ -11,3 +11,8 @@ ACC_BaseCharacter::ACC_BaseCharacter()
 	// 许多动画相关的功能都依赖于在专门的服务器上正确更新动画。
 	GetMesh()->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
 }
+
+UAbilitySystemComponent* ACC_BaseCharacter::GetAbilitySystemComponent() const
+{
+	return nullptr;
+}

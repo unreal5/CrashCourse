@@ -3,10 +3,12 @@
 
 #include "Character/CC_PlayerCharacter.h"
 
+#include "AbilitySystemComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Player/CC_PlayerState.h"
 
 ACC_PlayerCharacter::ACC_PlayerCharacter()
 {
@@ -36,4 +38,27 @@ ACC_PlayerCharacter::ACC_PlayerCharacter()
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;
+}
+
+UAbilitySystemComponent* ACC_PlayerCharacter::GetAbilitySystemComponent() const
+{
+	auto CC_PlayerState = GetPlayerState<ACC_PlayerState>();
+	return CC_PlayerState ? CC_PlayerState->GetAbilitySystemComponent() : nullptr;
+}
+
+// Called when this Pawn is possessed. Only called on the server (or in standalone).
+void ACC_PlayerCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	if (!IsValid(GetAbilitySystemComponent())) return;
+	GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
+}
+
+void ACC_PlayerCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+
+	if (!IsValid(GetAbilitySystemComponent())) return;
+	GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
 }
