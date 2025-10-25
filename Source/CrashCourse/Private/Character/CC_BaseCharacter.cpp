@@ -3,6 +3,9 @@
 
 #include "Character/CC_BaseCharacter.h"
 
+#include "AbilitySystemComponent.h"
+#include "Abilities/GameplayAbility.h"
+
 
 ACC_BaseCharacter::ACC_BaseCharacter()
 {
@@ -15,4 +18,17 @@ ACC_BaseCharacter::ACC_BaseCharacter()
 UAbilitySystemComponent* ACC_BaseCharacter::GetAbilitySystemComponent() const
 {
 	return nullptr;
+}
+
+void ACC_BaseCharacter::GiveStartupAbilities()
+{
+	const auto Asc = GetAbilitySystemComponent();
+	if (!IsValid(Asc)) return;
+	for (const auto& AbilityClass : StartupAbilities)
+	{
+		if (!AbilityClass) continue;
+
+		FGameplayAbilitySpec Spec(AbilityClass);
+		Asc->GiveAbility(Spec);
+	}
 }
