@@ -3,9 +3,12 @@
 
 #include "Player/CC_PlayerController.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "GameFramework/Character.h"
+#include "GameplayTag/CCTags.h"
 
 void ACC_PlayerController::SetupInputComponent()
 {
@@ -48,10 +51,10 @@ void ACC_PlayerController::StopJumping()
 void ACC_PlayerController::Move(const FInputActionValue& Value)
 {
 	if (!IsValid(GetPawn()))return;
-	
+
 	FVector2D InputValue = Value.Get<FVector2D>();
-	FVector MovementDirection = FVector{InputValue.Y,InputValue.X, 0.f};
-	const FRotator YawRotation {0.f, GetControlRotation().Yaw,0.f};
+	FVector MovementDirection = FVector{InputValue.Y, InputValue.X, 0.f};
+	const FRotator YawRotation{0.f, GetControlRotation().Yaw, 0.f};
 	MovementDirection = YawRotation.RotateVector(MovementDirection);
 	GetPawn()->AddMovementInput(MovementDirection);
 }
@@ -65,4 +68,13 @@ void ACC_PlayerController::Look(const FInputActionValue& Value)
 
 void ACC_PlayerController::Primary()
 {
+	ActivateAbility(CCTags::CCAbilities::Primary);
+}
+
+void ACC_PlayerController::ActivateAbility(const FGameplayTag& AbilityTag) const
+{
+	const auto& Asc = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn());
+	if (!IsValid(Asc)) return;
+
+	Asc->TryActivateAbilitiesByTag(AbilityTag.GetSingleTagContainer());
 }

@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerController.h"
 #include "CC_PlayerController.generated.h"
 
+struct FGameplayTag;
 struct FInputActionValue;
 class UInputAction;
 class UInputMappingContext;
@@ -44,4 +45,6 @@ private:
 	void Look(const FInputActionValue& Value);
 
 	void Primary();
+	
+	void ActivateAbility(const FGameplayTag& AbilityTag) const;
 };
