@@ -17,13 +17,4 @@ class CRASHCOURSE_API UCC_GameplayAbility : public UGameplayAbility
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Crash|Debug")
 	bool bDrawDebugs = false;
-
-protected:
-	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
-	                             const FGameplayAbilityActivationInfo ActivationInfo,
-	                             const FGameplayEventData* TriggerEventData) override;
-
-private:
-	UPROPERTY(EditDefaultsOnly, Category = "Crash|Montage")
-	TObjectPtr<UAnimMontage> AbilityMontage;
 };
