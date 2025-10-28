@@ -16,7 +16,10 @@ class CRASHCOURSE_API UCC_Primary : public UCC_GameplayAbility
 
 protected:
 	UFUNCTION(BlueprintCallable, Category="Crash|Ability")
-	void HitBoxOverlapTest();
+	TArray<AActor*> HitBoxOverlapTest();
+
+	UFUNCTION(BlueprintCallable, Category="Crash|Ability")
+	void SendGameplayEventToActors(const TArray<AActor*>& HitActors);
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category="Crash|Ability")
@@ -25,4 +28,6 @@ private:
 	float HitBoxForwardOffset = 200.f;
 	UPROPERTY(EditDefaultsOnly, Category="Crash|Ability")
 	float HitBoxEvevationOffset = 20.f;
+
+	void DrawHitBoxOverlapDebugSphere(TArray<AActor*> OverlapActors, const FVector HitBoxLocation) const;
 };
