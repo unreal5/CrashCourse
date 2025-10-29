@@ -20,7 +20,7 @@ EHitDirection UCC_BlueprintLibrary::GetHitDirection(const FVector& TargetForward
 	{
 		// 左右
 		FVector Cross = FVector::CrossProduct(TargetForward, ToInstigator);
-		Result = Cross.Z < 0.f ? EHitDirection::Right : EHitDirection::Left;
+		Result = Cross.Z > 0.f ? EHitDirection::Right : EHitDirection::Left;
 	}
 	// 其它，正前方
 	return Result;
