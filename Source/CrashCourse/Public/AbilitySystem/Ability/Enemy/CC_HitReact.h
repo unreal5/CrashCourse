@@ -13,4 +13,13 @@ UCLASS(Abstract)
 class CRASHCOURSE_API UCC_HitReact : public UCC_GameplayAbility
 {
 	GENERATED_BODY()
+
+public:
+	UFUNCTION(BlueprintCallable, Category="Crash|Ability|HitReact")
+	void CacheHitDirectionVectors(AActor* Instigator);
+
+	UPROPERTY(BlueprintReadOnly, Category="Crash|Ability|HitReact")
+	FVector AvatarForward;
+	UPROPERTY(BlueprintReadOnly, Category="Crash|Ability|HitReact")
+	FVector ToInstigator;
 };

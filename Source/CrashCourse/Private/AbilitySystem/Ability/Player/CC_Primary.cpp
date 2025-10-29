@@ -51,9 +51,7 @@ TArray<AActor*> UCC_Primary::HitBoxOverlapTest()
 
 		HitActors.AddUnique(Result.GetActor());
 	}
-
-	// 发送命中事件
-	SendGameplayEventToActors(HitActors);
+	
 	// 调试绘制
 	if (bDrawDebugs)
 	{

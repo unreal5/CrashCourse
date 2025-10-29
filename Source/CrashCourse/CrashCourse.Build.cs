@@ -12,7 +12,7 @@ public class CrashCourse : ModuleRules
 			"Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "NavigationSystem", "AIModule",
 			"GameplayAbilities", "GameplayTags", "GameplayTasks"
 		]);
-
+		PrivateDependencyModuleNames.AddRange(["AnimGraphRuntime"]);
 		PublicIncludePaths.AddRange(["CrashCourse/", "CrashCourse/Public"]);
 	}
 }
