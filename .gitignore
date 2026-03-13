@@ -1,0 +1,44 @@
+﻿# Unreal Engine generated directories
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+
+# Unreal build/cache artifacts
+.vs/
+*.VC.db
+*.VC.opendb
+*.suo
+*.opensdf
+*.sdf
+*.xcodeproj
+*.xcworkspace
+
+# Visual Studio / Rider user files
+.vscode/
+.idea/
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build logs and temp files
+*.log
+*.tmp
+*.cache
+
+# OS files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Crash dumps and profiling artifacts
+*.dmp
+*.ue4stats
+
+# Python cache (if any tools/scripts are used)
+__pycache__/
+*.pyc
+
+# Keep source assets and project definitions tracked
+# (Config/, Content/, Source/, *.uproject, *.sln are intentionally not ignored)
+
