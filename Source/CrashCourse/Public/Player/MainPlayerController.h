@@ -20,14 +20,21 @@ protected:
 	UPROPERTY(EditAnywhere, Category ="Crash|Input")
 	TArray<TObjectPtr<class UInputMappingContext>> InputMappingContexts;
 	
-	UPROPERTY(EditAnywhere, Category="Crash|Input")
+	UPROPERTY(EditAnywhere, Category="Crash|Input|Movement")
 	UInputAction* JumpAction;
 
 	/** Move Input Action */
-	UPROPERTY(EditAnywhere, Category="Crash|Input")
+	UPROPERTY(EditAnywhere, Category="Crash|Input|Movement")
 	UInputAction* MoveAction;
 
 	/** Look Input Action */
-	UPROPERTY(EditAnywhere, Category="Crash|Input")
+	UPROPERTY(EditAnywhere, Category="Crash|Input|Movement")
 	UInputAction* LookAction;
+	
+	/** Abilities Input Action */
+	UPROPERTY(EditAnywhere, Category="Crash|Input|Abilities")
+	UInputAction* PrimaryAction;
+
+private:
+	void Primary();
 };

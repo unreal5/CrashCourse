@@ -56,4 +56,13 @@ void AMainPlayerController::SetupInputComponent()
 		AddPitchInput(LookValue.Y);
 	};
 	EnhancedInputComponent->BindActionValueLambda(LookAction, ETriggerEvent::Triggered, LookFunctor);
+
+
+	// 绑定 Primary Action
+	EnhancedInputComponent->BindAction(PrimaryAction, ETriggerEvent::Started, this, &ThisClass::Primary);
+}
+
+void AMainPlayerController::Primary()
+{
+	UE_LOG(LogTemp, Log, TEXT("Primary Action Triggered"));
 }
