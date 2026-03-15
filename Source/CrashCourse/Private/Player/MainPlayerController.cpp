@@ -8,6 +8,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "GameFramework/Character.h"
+#include "GameplayTag/CCTags.h"
 
 void AMainPlayerController::SetupInputComponent()
 {
@@ -69,8 +70,8 @@ void AMainPlayerController::Primary()
 	auto ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn());
 	if (!ASC) return;
 	
-	auto Abilities = ASC->GetActivatableAbilities();
-	if (Abilities.IsEmpty()) return;
-	ASC->TryActivateAbility(Abilities[0].Handle);
+	FGameplayTagContainer TagContainer;
+	TagContainer.AddTag(CCTags::CCAbilities::Primary);
+	ASC->TryActivateAbilitiesByTag(TagContainer);
 
 }
