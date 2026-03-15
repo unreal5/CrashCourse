@@ -57,6 +57,7 @@ void AMainPlayerCharacter::PossessedBy(AController* NewController)
 	if (HasAuthority())
 	{
 		InitializeAbilityActorInfo();
+		GiveStartupAbilities();
 	}
 }
 

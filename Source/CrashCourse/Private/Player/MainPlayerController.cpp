@@ -3,6 +3,8 @@
 
 #include "Player/MainPlayerController.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "GameFramework/Character.h"
@@ -64,5 +66,11 @@ void AMainPlayerController::SetupInputComponent()
 
 void AMainPlayerController::Primary()
 {
-	UE_LOG(LogTemp, Log, TEXT("Primary Action Triggered"));
+	auto ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn());
+	if (!ASC) return;
+	
+	auto Abilities = ASC->GetActivatableAbilities();
+	if (Abilities.IsEmpty()) return;
+	ASC->TryActivateAbility(Abilities[0].Handle);
+
 }
