@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "MainPlayerController.generated.h"
 
+struct FGameplayTag;
 class UInputAction;
 
 UCLASS()
@@ -34,7 +35,13 @@ protected:
 	/** Abilities Input Action */
 	UPROPERTY(EditAnywhere, Category="Crash|Input|Abilities")
 	UInputAction* PrimaryAction;
+	
+	UPROPERTY(EditAnywhere, Category="Crash|Input|Abilities")
+	UInputAction* SecondaryAction;
+	
+	UPROPERTY(EditAnywhere, Category="Crash|Input|Abilities")
+	UInputAction* TertiaryAction;
 
 private:
-	void Primary();
+	void ActivateAbility(const FGameplayTag& AbilityTag) const;
 };

@@ -26,8 +26,8 @@ void AMainPlayerController::SetupInputComponent()
 	}
 
 	// 绑定输入事件
-	auto EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent);
-	if (!EnhancedInputComponent) return;
+	auto EIC = Cast<UEnhancedInputComponent>(InputComponent);
+	if (!EIC) return;
 
 	auto JumpFunctor = [this](const FInputActionValue& /* Value */, bool bIsTriggered)
 	{
@@ -36,8 +36,8 @@ void AMainPlayerController::SetupInputComponent()
 		bIsTriggered ? Char->Jump() : Char->StopJumping();
 	};
 
-	EnhancedInputComponent->BindActionValueLambda(JumpAction, ETriggerEvent::Started, JumpFunctor, true);
-	EnhancedInputComponent->BindActionValueLambda(JumpAction, ETriggerEvent::Completed, JumpFunctor, false);
+	EIC->BindActionValueLambda(JumpAction, ETriggerEvent::Started, JumpFunctor, true);
+	EIC->BindActionValueLambda(JumpAction, ETriggerEvent::Completed, JumpFunctor, false);
 
 	auto MoveFunctor = [this](const FInputActionValue& Value)
 	{
@@ -50,7 +50,7 @@ void AMainPlayerController::SetupInputComponent()
 		const FVector MoveDirection = ControlRotation.RotateVector(FVector{MoveValue.Y, MoveValue.X, 0.f});
 		Char->AddMovementInput(MoveDirection);
 	};
-	EnhancedInputComponent->BindActionValueLambda(MoveAction, ETriggerEvent::Triggered, MoveFunctor);
+	EIC->BindActionValueLambda(MoveAction, ETriggerEvent::Triggered, MoveFunctor);
 
 	auto LookFunctor = [this](const FInputActionValue& Value)
 	{
@@ -58,20 +58,28 @@ void AMainPlayerController::SetupInputComponent()
 		AddYawInput(LookValue.X);
 		AddPitchInput(LookValue.Y);
 	};
-	EnhancedInputComponent->BindActionValueLambda(LookAction, ETriggerEvent::Triggered, LookFunctor);
+	EIC->BindActionValueLambda(LookAction, ETriggerEvent::Triggered, LookFunctor);
 
 
 	// 绑定 Primary Action
-	EnhancedInputComponent->BindAction(PrimaryAction, ETriggerEvent::Started, this, &ThisClass::Primary);
+	auto AbilityFunctor = [this](auto /* Value */, const FGameplayTag& Tag)
+	{
+		ActivateAbility(Tag);
+	};
+	EIC->BindActionValueLambda(PrimaryAction, ETriggerEvent::Started, AbilityFunctor, CCTags::CCAbilities::Primary.GetTag());
+	EIC->BindActionValueLambda(SecondaryAction, ETriggerEvent::Started, AbilityFunctor,
+	                           CCTags::CCAbilities::Secondary.GetTag());
+
+	EIC->BindActionValueLambda(TertiaryAction, ETriggerEvent::Started, AbilityFunctor,
+	                           CCTags::CCAbilities::Tertiary.GetTag());
 }
 
-void AMainPlayerController::Primary()
+
+void AMainPlayerController::ActivateAbility(const FGameplayTag& AbilityTag) const
 {
 	auto ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn());
-	if (!ASC) return;
-	
-	FGameplayTagContainer TagContainer;
-	TagContainer.AddTag(CCTags::CCAbilities::Primary);
-	ASC->TryActivateAbilitiesByTag(TagContainer);
+	if (!IsValid(ASC)) return;
 
+	FGameplayTagContainer TagContainer = AbilityTag.GetSingleTagContainer();
+	ASC->TryActivateAbilitiesByTag(TagContainer);
 }
