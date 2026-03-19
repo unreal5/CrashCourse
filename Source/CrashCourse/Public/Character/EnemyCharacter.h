@@ -6,6 +6,7 @@
 #include "BaseCharacter.h"
 #include "EnemyCharacter.generated.h"
 
+class UBaseAbilitySystemComponent;
 class UAbilitySystemComponent;
 
 UCLASS()
@@ -20,5 +21,5 @@ protected:
 	virtual void BeginPlay() override;
 private:
 	UPROPERTY()
-	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+	TObjectPtr<UBaseAbilitySystemComponent> EnemyAsc;
 };

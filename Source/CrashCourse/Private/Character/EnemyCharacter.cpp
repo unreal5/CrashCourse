@@ -4,31 +4,32 @@
 #include "Character/EnemyCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/BaseAbilitySystemComponent.h"
 
 
 AEnemyCharacter::AEnemyCharacter()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
-	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
-	AbilitySystemComponent->SetIsReplicated(true);
-	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
+	EnemyAsc = CreateDefaultSubobject<UBaseAbilitySystemComponent>(TEXT("BaseEnemyASC"));
+	EnemyAsc->SetIsReplicated(true);
+	EnemyAsc->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 }
 
 UAbilitySystemComponent* AEnemyCharacter::GetAbilitySystemComponent() const
 {
-	return AbilitySystemComponent;
+	return EnemyAsc;
 }
 
 void AEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (!IsValid(AbilitySystemComponent)) return;
+	if (!IsValid(EnemyAsc)) return;
 
 	GetAbilitySystemComponent()->InitAbilityActorInfo(this, this);
-	
+
 	if (!HasAuthority()) return;
-	
+
 	GiveStartupAbilities();
 }

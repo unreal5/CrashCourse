@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerState.h"
 #include "MainPlayerState.generated.h"
 
+class UBaseAbilitySystemComponent;
 class UAbilitySystemComponent;
 
 UCLASS()
@@ -20,5 +21,5 @@ public:
 
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Crash Coursh | AbilitySystem")
-	TObjectPtr<UAbilitySystemComponent> ASC;
+	TObjectPtr<UBaseAbilitySystemComponent> CharAsc;
 };

@@ -4,17 +4,18 @@
 #include "Player/MainPlayerState.h"
 
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/BaseAbilitySystemComponent.h"
 
 AMainPlayerState::AMainPlayerState()
 {
 	SetNetUpdateFrequency(100.f);
 
-	ASC = CreateDefaultSubobject<UAbilitySystemComponent>("AbilitySystemComponent");
-	ASC->SetIsReplicated(true);
-	ASC->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
+	CharAsc = CreateDefaultSubobject<UBaseAbilitySystemComponent>("BaseASC");
+	CharAsc->SetIsReplicated(true);
+	CharAsc->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 }
 
 UAbilitySystemComponent* AMainPlayerState::GetAbilitySystemComponent() const
 {
-	return ASC;
+	return CharAsc;
 }
