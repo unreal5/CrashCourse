@@ -19,7 +19,12 @@ public:
 	AMainPlayerState();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
+protected:
+	UBaseAbilitySystemComponent* GetBaseAbilitySystemComponent() const;
+
 private:
-	UPROPERTY(VisibleAnywhere, Category = "Crash Coursh | AbilitySystem")
+	// Blueprint 子类已经依赖这个默认子对象；后续请尽量只改访问器，不要再改底层 UPROPERTY 名。
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "CrashCourse|AbilitySystem",
+		meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UBaseAbilitySystemComponent> CharAsc;
 };

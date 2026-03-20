@@ -3,7 +3,9 @@
 
 #include "Character/MainPlayerCharacter.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/BaseAbilitySystemComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -46,8 +48,8 @@ AMainPlayerCharacter::AMainPlayerCharacter()
 
 UAbilitySystemComponent* AMainPlayerCharacter::GetAbilitySystemComponent() const
 {
-	AMainPlayerState* PS = GetPlayerState<AMainPlayerState>();
-	return IsValid(PS) ? PS->GetAbilitySystemComponent() : nullptr;
+	auto PS = GetPlayerState<AMainPlayerState>();
+	return UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(PS);
 }
 
 void AMainPlayerCharacter::PossessedBy(AController* NewController)
@@ -70,8 +72,14 @@ void AMainPlayerCharacter::OnRep_PlayerState()
 
 void AMainPlayerCharacter::InitializeAbilityActorInfo()
 {
-	if (auto ASC = GetAbilitySystemComponent())
+	AMainPlayerState* PS = GetPlayerState<AMainPlayerState>();
+	if (!IsValid(PS)) return;
+
+	auto ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(PS);
+	if (!ensureMsgf(IsValid(ASC), TEXT("%s has a valid MainPlayerState, but its AbilitySystemComponent is null. This usually indicates a Blueprint default object/component reset after a native rename."), *GetNameSafe(PS)))
 	{
-		ASC->InitAbilityActorInfo(GetPlayerState<AMainPlayerState>(), this);
+		return;
 	}
+
+	ASC->InitAbilityActorInfo(PS, this);
 }
