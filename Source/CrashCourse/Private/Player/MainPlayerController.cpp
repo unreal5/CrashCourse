@@ -77,7 +77,7 @@ void AMainPlayerController::SetupInputComponent()
 
 void AMainPlayerController::ActivateAbility(const FGameplayTag& AbilityTag) const
 {
-	auto ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn());
+	auto ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn()); 
 	if (!IsValid(ASC)) return;
 
 	FGameplayTagContainer TagContainer = AbilityTag.GetSingleTagContainer();
