@@ -3,12 +3,16 @@
 
 #include "AbilitySystem/Player/GA_Primary.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "Engine/OverlapResult.h"
 
-void UGA_Primary::HitBoxOverlapTest()
+
+TArray<AActor*> UGA_Primary::HitBoxOverlapTest() const
 {
+	TArray<AActor*> Result;
+
 	auto AvatarActor = GetAvatarActorFromActorInfo();
-	if (!AvatarActor) return;
+	if (!AvatarActor) return Result;
 
 	TArray<AActor*> IgnoredActors;
 	IgnoredActors.Add(AvatarActor);
@@ -33,16 +37,35 @@ void UGA_Primary::HitBoxOverlapTest()
 	                                  Sphere,
 	                                  QueryParams,
 	                                  ResponseParams);
-	if (!bDrawDebug)
-		return;
 
 	for (const FOverlapResult& Overlap : Overlaps)
 	{
-		if (AActor* OverlappedActor = Overlap.GetActor())
-		{
-			UE_LOG(LogTemp, Log, TEXT("HitBox overlapped with: %s"), *OverlappedActor->GetName());
-			// 在这里可以对OverlappedActor进行伤害处理或其他逻辑
-			DrawDebugSphere(GetWorld(), OverlappedActor->GetActorLocation(), 20.f, 12, FColor::Red, false, 10.0f);
-		}
+		AActor* OverlappedActor = Overlap.GetActor();
+		if (!IsValid(OverlappedActor)) continue;
+		Result.AddUnique(OverlappedActor);
+	}
+	return Result;
+}
+
+void UGA_Primary::SendHitReactEventToActors(const TArray<AActor*>& HitActors, const FGameplayTag& Tag) const
+{
+	for (AActor* OverlappedActor : HitActors)
+	{
+		if (!IsValid(OverlappedActor)) continue;
+
+		FGameplayEventData Payload;
+		Payload.Instigator = GetAvatarActorFromActorInfo();
+
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(OverlappedActor, Tag, Payload);
+	}
+}
+
+void UGA_Primary::DrawHitBoxOverlapDebugs(const TArray<AActor*>& Overlaps, const FVector& HitBoxLocation) const
+{
+	DrawDebugSphere(GetWorld(), HitBoxLocation, 20.f, 12, FColor::Blue, false, 10.0f);
+	for (AActor* OverlappedActor : Overlaps)
+	{
+		// 在这里可以对OverlappedActor进行伤害处理或其他逻辑
+		DrawDebugSphere(GetWorld(), OverlappedActor->GetActorLocation(), 20.f, 12, FColor::Red, false, 10.0f);
 	}
 }
