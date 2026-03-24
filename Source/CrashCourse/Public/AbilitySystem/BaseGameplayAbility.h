@@ -15,6 +15,9 @@ class CRASHCOURSE_API UBaseGameplayAbility : public UGameplayAbility
 	GENERATED_BODY()
 
 protected:
+	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+		const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Crash|Debug")
 	bool bDrawDebug = false;
 };
