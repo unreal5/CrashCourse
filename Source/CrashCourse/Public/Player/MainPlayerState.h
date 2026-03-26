@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerState.h"
 #include "MainPlayerState.generated.h"
 
+class UAttributeSet;
 class UBaseAbilitySystemComponent;
 class UAbilitySystemComponent;
 
@@ -22,9 +23,11 @@ public:
 protected:
 	UBaseAbilitySystemComponent* GetBaseAbilitySystemComponent() const;
 
-private:
 	// Blueprint 子类已经依赖这个默认子对象；后续请尽量只改访问器，不要再改底层 UPROPERTY 名。
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "CrashCourse|AbilitySystem",
-		meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "CrashCourse|AbilitySystem")
 	TObjectPtr<UBaseAbilitySystemComponent> CharAsc;
+
+private:
+	UPROPERTY()
+	TObjectPtr<UAttributeSet> AttributeSet;
 };

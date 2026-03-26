@@ -60,6 +60,7 @@ void AMainPlayerCharacter::PossessedBy(AController* NewController)
 	{
 		InitializeAbilityActorInfo();
 		GiveStartupAbilities();
+		InitializeAttributes();
 	}
 }
 

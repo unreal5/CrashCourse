@@ -5,6 +5,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/BaseAbilitySystemComponent.h"
+#include "AbilitySystem/BaseAttributeSet.h"
 
 
 AEnemyCharacter::AEnemyCharacter()
@@ -14,6 +15,8 @@ AEnemyCharacter::AEnemyCharacter()
 	EnemyAsc = CreateDefaultSubobject<UBaseAbilitySystemComponent>(TEXT("BaseEnemyASC"));
 	EnemyAsc->SetIsReplicated(true);
 	EnemyAsc->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
+	
+AttributeSet = CreateDefaultSubobject<UBaseAttributeSet>(TEXT("BaseEnemyAttributeSet"));
 }
 
 UAbilitySystemComponent* AEnemyCharacter::GetAbilitySystemComponent() const

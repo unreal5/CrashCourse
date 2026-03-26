@@ -6,6 +6,7 @@
 #include "BaseCharacter.h"
 #include "EnemyCharacter.generated.h"
 
+class UAttributeSet;
 class UBaseAbilitySystemComponent;
 class UAbilitySystemComponent;
 
@@ -22,4 +23,7 @@ protected:
 private:
 	UPROPERTY()
 	TObjectPtr<UBaseAbilitySystemComponent> EnemyAsc;
+	
+	UPROPERTY()
+	TObjectPtr<UAttributeSet> AttributeSet;
 };
