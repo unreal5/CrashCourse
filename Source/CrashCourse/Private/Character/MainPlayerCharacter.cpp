@@ -6,6 +6,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/BaseAbilitySystemComponent.h"
+#include "AbilitySystem/BaseAttributeSet.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -52,6 +53,15 @@ UAbilitySystemComponent* AMainPlayerCharacter::GetAbilitySystemComponent() const
 	return UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(PS);
 }
 
+UAttributeSet* AMainPlayerCharacter::GetAttributeSet() const
+{
+	auto PS = GetPlayerState<AMainPlayerState>();
+	if (!IsValid(PS)) return nullptr;
+
+
+	return PS->GetAttributeSet();
+}
+
 void AMainPlayerCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
@@ -60,6 +70,7 @@ void AMainPlayerCharacter::PossessedBy(AController* NewController)
 	{
 		InitializeAbilityActorInfo();
 		GiveStartupAbilities();
+		
 		InitializeAttributes();
 	}
 }
@@ -83,4 +94,6 @@ void AMainPlayerCharacter::InitializeAbilityActorInfo()
 	}
 
 	ASC->InitAbilityActorInfo(PS, this);
+	
+	OnASCInitialized.Broadcast(ASC, GetAttributeSet());
 }

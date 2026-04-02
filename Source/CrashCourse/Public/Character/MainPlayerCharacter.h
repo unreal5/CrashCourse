@@ -15,6 +15,7 @@ class CRASHCOURSE_API AMainPlayerCharacter : public ABaseCharacter
 public:
 	AMainPlayerCharacter();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	virtual UAttributeSet* GetAttributeSet() const override;
 	
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void OnRep_PlayerState() override;

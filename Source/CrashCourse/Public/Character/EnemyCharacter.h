@@ -18,6 +18,7 @@ class CRASHCOURSE_API AEnemyCharacter : public ABaseCharacter
 public:
 	AEnemyCharacter();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	virtual UAttributeSet* GetAttributeSet() const override;
 protected:
 	virtual void BeginPlay() override;
 private:

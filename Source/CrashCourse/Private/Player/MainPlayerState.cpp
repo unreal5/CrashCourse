@@ -24,6 +24,11 @@ UAbilitySystemComponent* AMainPlayerState::GetAbilitySystemComponent() const
 	return GetBaseAbilitySystemComponent();
 }
 
+UAttributeSet* AMainPlayerState::GetAttributeSet() const
+{
+	return AttributeSet;
+}
+
 UBaseAbilitySystemComponent* AMainPlayerState::GetBaseAbilitySystemComponent() const
 {
 	return CharAsc;

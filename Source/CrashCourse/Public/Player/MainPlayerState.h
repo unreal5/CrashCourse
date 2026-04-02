@@ -19,7 +19,7 @@ class CRASHCOURSE_API AMainPlayerState : public APlayerState, public IAbilitySys
 public:
 	AMainPlayerState();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-
+	UAttributeSet* GetAttributeSet() const;
 protected:
 	UBaseAbilitySystemComponent* GetBaseAbilitySystemComponent() const;
 

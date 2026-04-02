@@ -8,29 +8,49 @@
 void UBaseAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	
+
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Health, COND_None, REPNOTIFY_Always)
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, MaxHealth, COND_None, REPNOTIFY_Always)
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Mana, COND_None, REPNOTIFY_Always)
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, MaxMana, COND_None, REPNOTIFY_Always)
+
+	DOREPLIFETIME(ThisClass, bAttributesInitialized)
 }
 
-void UBaseAttributeSet::OnRep_Health(const FGameplayAttributeData& OldValue)
+void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
+{
+	Super::PostGameplayEffectExecute(Data);
+	if (!bAttributesInitialized)
+	{
+		bAttributesInitialized = true;
+		OnAttributesInitialized.Broadcast();
+	}
+}
+
+void UBaseAttributeSet::OnRep_Health(const FGameplayAttributeData& OldValue) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(ThisClass, Health, OldValue)
 }
 
-void UBaseAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldValue)
+void UBaseAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldValue) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(ThisClass, MaxHealth, OldValue)
 }
 
-void UBaseAttributeSet::OnRep_Mana(const FGameplayAttributeData& OldValue)
+void UBaseAttributeSet::OnRep_Mana(const FGameplayAttributeData& OldValue) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(ThisClass, Mana, OldValue)
 }
 
-void UBaseAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldValue)
+void UBaseAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldValue) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(ThisClass, MaxMana, OldValue)
+}
+
+void UBaseAttributeSet::OnRep_AttributesInitialized(const bool& OldValue) const
+{
+	if (bAttributesInitialized)
+	{
+		OnAttributesInitialized.Broadcast();
+	}
 }
