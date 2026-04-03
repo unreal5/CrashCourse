@@ -75,7 +75,7 @@ void UBaseWidgetComponent::BindToAttributeChange()
 	{
 		if (!Item.Key.IsValid() || !Item.Value.IsValid()) continue;
 
-		auto AttributeWidget = Cast<UBaseAttributeWidget>(GetUserWidgetObject());
+		auto AttributeWidget = GetUserWidgetObject();
 		if (!IsValid(AttributeWidget)) continue;
 
 		BindWidgetToAttributeChange(AttributeWidget, Item);
