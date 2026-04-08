@@ -5,6 +5,33 @@
 
 #include "GameplayTag/CCTags.h"
 
+void UBaseAbilitySystemComponent::SetAbilityLevel(TSubclassOf<UGameplayAbility> InAbilityClass, int32 InLevel)
+{
+	// 只有服务器可以设置技能等级，因为技能等级的改变可能会影响技能的效果，而这些效果需要在服务器上进行计算和同步。
+	auto Avatar = GetAvatarActor();
+	//if (!IsValid(Avatar)||!Avatar->HasAuthority())	return;
+	if (!IsValid(Avatar)) return;
+	
+	auto AbilitySpec = FindAbilitySpecFromClass(InAbilityClass);
+	if (!AbilitySpec) return;
+	
+	AbilitySpec->Level = InLevel;
+	MarkAbilitySpecDirty(*AbilitySpec);
+}
+
+void UBaseAbilitySystemComponent::AddToAbilityLevel(TSubclassOf<UGameplayAbility> InAbilityClass, int32 InLevel)
+{
+	// 只有服务器可以设置技能等级，因为技能等级的改变可能会影响技能的效果，而这些效果需要在服务器上进行计算和同步。
+	auto Avatar = GetAvatarActor();
+	if (!IsValid(Avatar)||!Avatar->HasAuthority())	return;
+	
+	auto AbilitySpec = FindAbilitySpecFromClass(InAbilityClass);
+	if (!AbilitySpec) return;
+	
+	AbilitySpec->Level += InLevel;
+	MarkAbilitySpecDirty(*AbilitySpec);
+}
+
 void UBaseAbilitySystemComponent::OnGiveAbility(FGameplayAbilitySpec& AbilitySpec)
 {
 	// TODO: 详细分析Super::OnGiveAbility的实现
