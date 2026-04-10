@@ -66,13 +66,18 @@ void AMainPlayerCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
-	if (HasAuthority())
-	{
-		InitializeAbilityActorInfo();
-		GiveStartupAbilities();
-		
-		InitializeAttributes();
-	}
+	if (!HasAuthority()) return;
+	
+	auto ASC = GetAbilitySystemComponent();
+	if (!IsValid(ASC)) return;
+	
+	InitializeAbilityActorInfo();
+	GiveStartupAbilities();
+
+	InitializeAttributes();
+	
+	ASC->GetGameplayAttributeValueChangeDelegate(UBaseAttributeSet::GetHealthAttribute()).AddUObject(
+		this, &AMainPlayerCharacter::OnHealthChanged);
 }
 
 void AMainPlayerCharacter::OnRep_PlayerState()
@@ -88,12 +93,15 @@ void AMainPlayerCharacter::InitializeAbilityActorInfo()
 	if (!IsValid(PS)) return;
 
 	auto ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(PS);
-	if (!ensureMsgf(IsValid(ASC), TEXT("%s has a valid MainPlayerState, but its AbilitySystemComponent is null. This usually indicates a Blueprint default object/component reset after a native rename."), *GetNameSafe(PS)))
+	if (!ensureMsgf(IsValid(ASC),
+	                TEXT(
+		                "%s has a valid MainPlayerState, but its AbilitySystemComponent is null. This usually indicates a Blueprint default object/component reset after a native rename."
+	                ), *GetNameSafe(PS)))
 	{
 		return;
 	}
 
 	ASC->InitAbilityActorInfo(PS, this);
-	
+
 	OnASCInitialized.Broadcast(ASC, GetAttributeSet());
 }

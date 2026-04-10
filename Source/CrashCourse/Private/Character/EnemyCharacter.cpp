@@ -42,9 +42,12 @@ void AEnemyCharacter::BeginPlay()
 	OnASCInitialized.Broadcast(ASC, GetAttributeSet());
 
 	// 只有服务器需要给予初始技能和属性，因为客户端会通过 ASC 的 Replication 来同步这些数据。
-	if (HasAuthority())
-	{
-		GiveStartupAbilities();
-		InitializeAttributes();
-	}
+	if (!HasAuthority())
+		return;
+
+	GiveStartupAbilities();
+	InitializeAttributes();
+
+	ASC->GetGameplayAttributeValueChangeDelegate(UBaseAttributeSet::GetHealthAttribute()).AddUObject(
+		this, &AEnemyCharacter::OnHealthChanged);
 }
