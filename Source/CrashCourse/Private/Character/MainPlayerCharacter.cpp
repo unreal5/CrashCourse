@@ -85,6 +85,12 @@ void AMainPlayerCharacter::OnRep_PlayerState()
 	Super::OnRep_PlayerState();
 
 	InitializeAbilityActorInfo();
+	
+	// 这里代码和 PossessedBy 中重复了，要考虑重构，并且EnemyCharacter中也有类似代码。
+	auto ASC = GetAbilitySystemComponent();
+	if (!IsValid(ASC)) return;
+	ASC->GetGameplayAttributeValueChangeDelegate(UBaseAttributeSet::GetHealthAttribute()).AddUObject(
+		this, &AMainPlayerCharacter::OnHealthChanged);
 }
 
 void AMainPlayerCharacter::InitializeAbilityActorInfo()

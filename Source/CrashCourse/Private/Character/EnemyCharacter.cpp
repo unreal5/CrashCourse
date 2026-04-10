@@ -36,7 +36,8 @@ void AEnemyCharacter::BeginPlay()
 	if (!IsValid(EnemyAsc)) return;
 
 	auto ASC = GetAbilitySystemComponent();
-
+	if (!IsValid(ASC)) return;
+	
 	ASC->InitAbilityActorInfo(this, this);
 	// 触发 ASC 初始化完成的委托，供 UI 等系统使用（服务与客户端都需要）。
 	OnASCInitialized.Broadcast(ASC, GetAttributeSet());
