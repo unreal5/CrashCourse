@@ -11,7 +11,7 @@ struct FOnAttributeChangeData;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnAttributeChangeSignature, FGameplayAttribute, Attribute, float,
                                                NewValue, float, OldValue);
 
-UCLASS()
+UCLASS(BlueprintType, meta=(ExposedAsyncProxy = AsyncTask))
 class CRASHCOURSE_API UBaseAttributeChangeTask : public UBlueprintAsyncActionBase
 {
 	GENERATED_BODY()
