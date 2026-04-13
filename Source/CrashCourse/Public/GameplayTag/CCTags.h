@@ -35,4 +35,9 @@ namespace CCTags
 			UE_DECLARE_GAMEPLAY_TAG_EXTERN(HitReact)
 		}
 	}
+
+	namespace Status
+	{
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(Dead)
+	}
 }

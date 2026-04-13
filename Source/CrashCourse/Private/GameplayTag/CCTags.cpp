@@ -33,4 +33,9 @@ namespace CCTags
 			UE_DEFINE_GAMEPLAY_TAG_COMMENT(HitReact, "CCTags.Events.Enemy.HitReact", "敌人受击反应事件标签")
 		}
 	}
+	
+	namespace Status
+	{
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Dead, "CCTags.Status.Dead", "死亡状态标签")
+	}
 }
