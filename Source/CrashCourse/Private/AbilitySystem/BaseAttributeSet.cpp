@@ -3,6 +3,9 @@
 
 #include "AbilitySystem/BaseAttributeSet.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
+#include "GameplayEffectExtension.h"
+#include "GameplayTag/CCTags.h"
 #include "Net/UnrealNetwork.h"
 
 void UBaseAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -20,6 +23,21 @@ void UBaseAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 void UBaseAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
 	Super::PostGameplayEffectExecute(Data);
+
+	//UE_LOG(LogTemp, Log, TEXT("对%s执行了一个GameplayEffect"), *Data.EvaluatedData.Attribute.GetName());
+	if (Data.EvaluatedData.Attribute == GetHealthAttribute() && GetHealth() <= 0)
+	{
+		// TODO: Send a gameplay event to the causer of this effect.
+		FGameplayEventData PayLoad;
+		PayLoad.Instigator = Data.Target.GetAvatarActor();
+
+		// 获取到造成伤害的源头（如果有的话）
+		AActor* DamageCauser = Data.EffectSpec.GetEffectContext().GetInstigator();
+		if (!IsValid(DamageCauser)) return;
+
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(DamageCauser, CCTags::Events::KillScore, PayLoad);
+	}
+
 	if (!bAttributesInitialized)
 	{
 		bAttributesInitialized = true;
