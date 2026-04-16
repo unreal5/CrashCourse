@@ -19,12 +19,23 @@ public:
 	AEnemyCharacter();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	virtual UAttributeSet* GetAttributeSet() const override;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Crash | AI")
+	float AcceptanceRadius = 500.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Crash | AI")
+	float MinAttackDelay = 0.1f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Crash | AI")
+	float MaxAttackDelay = .5f;
+
 protected:
 	virtual void BeginPlay() override;
+
 private:
 	UPROPERTY()
 	TObjectPtr<UBaseAbilitySystemComponent> EnemyAsc;
-	
+
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
 };
